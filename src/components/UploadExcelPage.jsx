@@ -99,11 +99,11 @@ export default function UploadExcelPage() {
         className={`p-10 border-2 border-dashed rounded-xl text-center transition-all ${
           files.length
             ? "border-gray-400 bg-gray-100 cursor-not-allowed"
-            : "cursor-pointer border-gray-300 hover:border-blue-400"
+            : "cursor-pointer border-gray-300 hover:border-rose-400"
         }`}
       >
         <input {...getInputProps()} disabled={files.length > 0} />
-        <Upload className="mx-auto h-12 w-12 text-blue-500" />
+        <Upload className="mx-auto h-12 w-12 text-red-500" />
         <p className="mt-2 text-gray-700 font-medium">
           {files.length > 0
             ? "Đã chọn file, không thể tải thêm"
@@ -145,7 +145,7 @@ export default function UploadExcelPage() {
             disabled={!maNCC || maNCC.length < 3 || uploading}
             className="w-full mt-4 bg-red-500 hover:bg-red-600 cursor-pointer text-white"
           >
-            {uploading ? "Đang Xử Lý..." : "Import File"}{" "}
+            {uploading ? "Đang Xử Lý..." : "Convert File"}{" "}
             <CloudUpload className="ml-2 h-5 w-5" />
           </Button>
         </div>
