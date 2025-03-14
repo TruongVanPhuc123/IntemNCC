@@ -15,11 +15,15 @@ async function generateStickers(soLuong, pdfDoc, row, pageSize, height, width, m
     const rowCount = 5; // Số hàng
     const tableX = 30; // Lề trái 
     let page;
+    let totalSoKienNCC = 0; // Biến đếm tổng số kiện NCC
 
     for (let i = 0; i < soLuong; i++) {
         if (i % 4 === 0) {
             page = pdfDoc.addPage(pageSize);
         }
+
+        totalSoKienNCC = i + 1; // tổng số tem đã tạo
+
 
         const tableY = height - (i % 4) * 170 - 75;
         const colWidth = (width - 70) / colCount;
@@ -37,6 +41,7 @@ async function generateStickers(soLuong, pdfDoc, row, pageSize, height, width, m
         Content_Temp(headers, dataTable, page, tableX, tableY, colWidth, rowHeight, customFont);
         await QRCode(soBooking, maNCC, maSieuThi, soKienNCC, soHoaDonNCC, pdfDoc, tableX, tableY, colWidth, rowHeight, page);
     }
+    console.log(`✅ Tổng số tem đã tạo: ${totalSoKienNCC}`);
 }
 
 module.exports = { generateStickers }

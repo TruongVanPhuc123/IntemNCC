@@ -49,7 +49,7 @@ router.post("/upload/:maNCC", upload.single("file"), catchAsync(async (req, res,
       }
     }
     //**Xử lý trả File PDF về Client */
-    await dowloadPDFFile(pdfDoc, path, req, res);
+    await dowloadPDFFile(pdfDoc, path, res);
 
   } catch (error) {
     throw new AppError(500, error.message, "Lỗi hệ thống ❌");

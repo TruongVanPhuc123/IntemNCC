@@ -1,4 +1,5 @@
 const { rgb } = require("pdf-lib");
+const { AppError } = require("../helpers/utils");
 
 // **Merge cell**
 const mergedCells = [
@@ -7,7 +8,7 @@ const mergedCells = [
     { row: 3, colStart: 2, colEnd: 5 }, // Gộp "Hàng KM TP HSD Ngắn"
 ];
 
-async function CreateBorderLine(rowCount, rowHeight, tableY, tableX, page, colCount, colWidth, next) {
+async function CreateBorderLine(rowCount, rowHeight, tableY, tableX, page, colCount, colWidth) {
     try {
         for (let i = 0; i <= rowCount; i++) {
             const y = tableY - i * rowHeight;
@@ -30,7 +31,7 @@ async function CreateBorderLine(rowCount, rowHeight, tableY, tableX, page, colCo
             });
         }
     } catch (error) {
-        next(error)
+        throw new AppError(500, error.message, "Server Error !")
     }
 }
 

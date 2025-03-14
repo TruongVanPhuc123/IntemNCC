@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-async function dowloadPDFFile(pdfDoc, path, req, res) {
+async function dowloadPDFFile(pdfDoc, path, res) {
     const pdfBytes = await pdfDoc.save();
     const pdfPath = path.join(__dirname, "../uploads/output.pdf");
     fs.writeFileSync(pdfPath, pdfBytes, { encoding: "binary" });
