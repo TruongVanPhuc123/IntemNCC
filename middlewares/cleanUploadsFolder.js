@@ -23,7 +23,9 @@ function cleanUploadsFolder() {
 }
 
 // Lên lịch chạy mỗi ngày lúc 22:00
-cron.schedule("0 22 * * *", () => {
+cron.schedule("10 22 * * *", () => {
     console.log("🕙 Đang chạy cleanUploadsFolder...");
     cleanUploadsFolder();
+}, {
+    timezone: "Asia/Ho_Chi_Minh"
 });

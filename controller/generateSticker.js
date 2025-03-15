@@ -21,13 +21,11 @@ async function generateStickers(soLuong, pdfDoc, row, pageSize, height, width, m
         if (i % 4 === 0) {
             page = pdfDoc.addPage(pageSize);
         }
-
         totalSoKienNCC = i + 1; // tổng số tem đã tạo
 
-
-        const tableY = height - (i % 4) * 170 - 75;
+        const tableY = height - (i % 4) * 190 - 75; //Độ rộng giữa các table
         const colWidth = (width - 70) / colCount;
-        const rowHeight = 30;
+        const rowHeight = 30; //Độ cao của hàng
 
         const headers = ["", "TEM DÁN THÙNG", "", "", "Tổng Số Kiện", "Số Booking"];
         const dataTable = [

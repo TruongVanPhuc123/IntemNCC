@@ -1,16 +1,18 @@
 const sql = require("mssql");
 const { AppError } = require("./helpers/utils");
+require("dotenv").config()
 
 const config = {
-    user: "sa",
-    password: "1231",
-    server: "10.35.3.28", //10.35.3.28 //192.168.1.3
-    database: "Test_Connect",
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    server: process.env.DB_HOST,
+    database: process.env.DB_NAME,
     options: {
         encrypt: false,
         enableArithAbort: true,
     },
 };
+
 
 // Biến toàn cục để giữ kết nối, tránh tạo nhiều connection gây lỗi
 let poolPromise;
