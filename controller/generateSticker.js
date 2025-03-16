@@ -40,6 +40,7 @@ async function generateStickers(soLuong, pdfDoc, row, pageSize, height, width, m
         await QRCode(soBooking, maNCC, maSieuThi, soKienNCC, soHoaDonNCC, pdfDoc, tableX, tableY, colWidth, rowHeight, page);
     }
     console.log(`✅ Tổng số tem đã tạo: ${totalSoKienNCC}`);
+    console.log("------------------------------------------");
 }
 
 module.exports = { generateStickers }

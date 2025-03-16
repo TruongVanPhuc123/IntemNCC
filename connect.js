@@ -8,6 +8,11 @@ const config = {
     server: process.env.DB_HOST,
     database: process.env.DB_NAME,
     port: 1433,
+    pool: {
+        max: 50, // Tăng số kết nối tối đa
+        min: 5,
+        idleTimeoutMillis: 30000, // Timeout 30 giây
+    },
     options: {
         encrypt: false,
         enableArithAbort: true,
