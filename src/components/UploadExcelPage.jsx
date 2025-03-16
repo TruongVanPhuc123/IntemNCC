@@ -138,7 +138,7 @@ export default function UploadExcelPage() {
           />
           <Button
             onClick={uploadFiles}
-            disabled={!maNCC || maNCC.length < 3 || uploading}
+            disabled={!maNCC || maNCC.length < 5 || uploading}
             className="w-full mt-4 bg-red-500 hover:bg-red-600 cursor-pointer text-white"
           >
             {uploading ? "Đang Xử Lý..." : "Convert File"}{" "}
