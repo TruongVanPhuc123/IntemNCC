@@ -1,12 +1,24 @@
+const dateFormatter = new Intl.DateTimeFormat("vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+});
+
+// Bộ nhớ đệm để lưu kết quả đã format
+const dateCache = new Map();
+
 function formatDate(dateString) {
+    if (dateCache.has(dateString)) {
+        return dateCache.get(dateString);
+    }
+
     const date = new Date(dateString);
-    if (isNaN(date)) return dateString; // Nếu không phải ngày hợp lệ, trả về nguyên bản
+    if (isNaN(date)) return dateString; // Nếu không hợp lệ, trả về nguyên bản
 
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Tháng bắt đầu từ 0
-    const year = date.getFullYear();
+    const formattedDate = dateFormatter.format(date);
+    dateCache.set(dateString, formattedDate); // Lưu vào cache
 
-    return `${day}/${month}/${year}`;
+    return formattedDate;
 }
 
-module.exports = { formatDate }
+module.exports = { formatDate };

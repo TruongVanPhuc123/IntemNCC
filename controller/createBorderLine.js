@@ -1,18 +1,17 @@
 const { rgb } = require("pdf-lib");
 const { AppError } = require("../helpers/utils");
 
-// **Merge cell**
-const mergedCells = [
-    { row: 1, colStart: 0, colEnd: 3 }, // Gộp "Số hóa đơn"
-    { row: 2, colStart: 2, colEnd: 5 }, // Gộp "QR text"
-    { row: 3, colStart: 2, colEnd: 5 }, // Gộp "Hàng KM TP HSD Ngắn"
-];
+// **Dùng Set để kiểm tra nhanh các cột cần merge**
+const mergedColumns = new Set([1, 3]);
 
 async function CreateBorderLine(rowCount, rowHeight, tableY, tableX, page, colCount, colWidth) {
     try {
+        const lines = [];
+
+        // **Vẽ đường ngang**
         for (let i = 0; i <= rowCount; i++) {
             const y = tableY - i * rowHeight;
-            page.drawLine({
+            lines.push({
                 start: { x: tableX, y },
                 end: { x: tableX + colWidth * colCount, y },
                 thickness: 1,
@@ -20,19 +19,24 @@ async function CreateBorderLine(rowCount, rowHeight, tableY, tableX, page, colCo
             });
         }
 
+        // **Vẽ đường dọc (bỏ qua cột merge)**
         for (let i = 0; i <= colCount; i++) {
-            if (mergedCells.some((cell) => i === cell.colStart + 1)) continue;
+            if (mergedColumns.has(i)) continue;
             const x = tableX + i * colWidth;
-            page.drawLine({
+            lines.push({
                 start: { x, y: tableY },
                 end: { x, y: tableY - rowHeight * rowCount },
                 thickness: 1,
-                color: rgb(0, 0, 0),
+                color: rgb(1, 1, 1),
             });
         }
+
+        // **Batch vẽ để giảm số lần gọi API**
+        lines.forEach(line => page.drawLine(line));
+
     } catch (error) {
-        throw new AppError(500, error.message, "Server Error !")
+        throw new AppError(500, error.message, "Server Error!");
     }
 }
 
-module.exports = { CreateBorderLine }
+module.exports = { CreateBorderLine };

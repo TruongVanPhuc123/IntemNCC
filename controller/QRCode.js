@@ -1,17 +1,20 @@
-const qr = require('qrcode');
+const qr = require("qrcode");
 
-async function QRCode(soBooking, maNCC, maSieuThi, soKienNCC, soHoaDonNCC, pdfDoc, tableX, tableY, colWidth, rowHeight, page, next) {
+async function QRCode(soBooking, maNCC, maSieuThi, soKienNCC, soHoaDonNCC, pdfDoc, tableX, tableY, colWidth, rowHeight, page) {
     try {
         const qrText = `${soBooking}-${maNCC}-${maSieuThi}-${soKienNCC}-${soHoaDonNCC}`;
-        const qrImage = await qr.toBuffer(qrText, { type: 'png' });
-        const qrEmbed = await pdfDoc.embedPng(qrImage);
 
-        const qrWidth = 90; //Độ rộng QR 
-        const qrHeight = 80; //Độ cao QR
-        const qrX = tableX + 4.5 * colWidth + (colWidth - qrWidth) / 2; //Trái - phải
-        const qrY = tableY - 4.8 * rowHeight; //Lên - xuống
+        // **Tạo QR Code & nhúng vào PDF song song**
+        const qrDataUrl = await qr.toDataURL(qrText, { type: "image/png" });
+        const qrEmbed = await pdfDoc.embedPng(qrDataUrl);
 
+        // **Vị trí và kích thước QR**
+        const qrWidth = 90;
+        const qrHeight = 80;
+        const qrX = tableX + 4.5 * colWidth + (colWidth - qrWidth) / 2;
+        const qrY = tableY - 4.8 * rowHeight;
 
+        // **Vẽ QR lên PDF**
         page.drawImage(qrEmbed, {
             x: qrX,
             y: qrY,
@@ -19,8 +22,8 @@ async function QRCode(soBooking, maNCC, maSieuThi, soKienNCC, soHoaDonNCC, pdfDo
             height: qrHeight,
         });
     } catch (error) {
-        next(error)
+        throw new Error(`❌ Lỗi tạo QR Code: ${error.message}`);
     }
 }
 
-module.exports = { QRCode }
+module.exports = { QRCode };

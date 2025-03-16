@@ -1,11 +1,18 @@
-const XLSX = require('xlsx');
+const xlsx = require("xlsx");
 
-// **Hàm đọc Excel UTF-8**
-function readExcelWithUTF8(filePath) {
-    const workbook = XLSX.readFile(filePath);
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
-    return XLSX.utils.sheet_to_json(sheet, { raw: false, defval: "" });
+function readExcelWithUTF8(input) {
+    try {
+        const isBuffer = Buffer.isBuffer(input);
+        const workbook = isBuffer
+            ? xlsx.read(input, { type: "buffer", cellText: false, cellDates: true })
+            : xlsx.readFile(input, { cellText: false, cellDates: true });
+
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        return xlsx.utils.sheet_to_json(sheet, { defval: "" }); // Trả về JSON, tránh `undefined`
+    } catch (error) {
+        console.error("Error reading Excel file:", error.message);
+        return [];
+    }
 }
 
-module.exports = { readExcelWithUTF8 }
+module.exports = { readExcelWithUTF8 };

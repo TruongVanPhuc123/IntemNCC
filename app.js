@@ -5,12 +5,10 @@ var logger = require('morgan');
 const cors = require("cors");
 
 var indexRouter = require('./routes/index');
-const { connectDB } = require('./connect');
 const { sendResponse } = require('./helpers/utils');
 
 var app = express();
 
-connectDB(); // Coonnect SQL Server 
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
@@ -36,5 +34,13 @@ app.use((err, req, res, next) => {
         err.isOperational ? err.errorType : "Internal Server Error"
     );
 });
+
+if (global.gc) {
+    setInterval(() => {
+        global.gc();
+        console.log("Forced garbage collection");
+    }, 30000); // Thu gom rác mỗi 30s
+}
+
 
 module.exports = app;
