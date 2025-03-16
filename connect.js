@@ -7,6 +7,7 @@ const config = {
     password: process.env.DB_PASS,
     server: process.env.DB_HOST,
     database: process.env.DB_NAME,
+    port: 1433,
     options: {
         encrypt: false,
         enableArithAbort: true,
