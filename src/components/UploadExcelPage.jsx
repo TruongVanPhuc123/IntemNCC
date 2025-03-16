@@ -14,7 +14,7 @@ export default function UploadExcelPage() {
   const [uploading, setUploading] = useState(false);
   const [maNCC, setMaNCC] = useState("");
   const [uploadHistory, setUploadHistory] = useState([]);
-
+  const urlBE = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     // Load lịch sử upload từ localStorage (hoặc có thể từ API nếu cần)
     const history = JSON.parse(localStorage.getItem("uploadHistory")) || [];
@@ -44,13 +44,9 @@ export default function UploadExcelPage() {
     files.forEach((file) => formData.append("file", file));
 
     try {
-      const response = await axios.post(
-        `http://localhost:3000/upload/${maNCC}`,
-        formData,
-        {
-          responseType: "blob", // Nhận dữ liệu dưới dạng Blob (PDF)
-        }
-      );
+      const response = await axios.post(`${urlBE}/upload/${maNCC}`, formData, {
+        responseType: "blob", // Nhận dữ liệu dưới dạng Blob (PDF)
+      });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const a = document.createElement("a");
