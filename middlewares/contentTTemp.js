@@ -1,4 +1,4 @@
-const { getCenteredTextX } = require("./getCenteredTextX");
+const { getCenteredTextX } = require("./centerText");
 const { rgb } = require("pdf-lib");
 
 async function Content_Temp(headers, dataTable, page, tableX, tableY, colWidth, rowHeight, customFont) {
@@ -13,8 +13,6 @@ async function Content_Temp(headers, dataTable, page, tableX, tableY, colWidth, 
         color: rgb(0.8, 0.8, 0.8),
     });
 
-    const elements = [];
-
     headers.forEach((text, colIndex) => {
         let fontSize = 10;
         if (/^\d+$/.test(text)) {
@@ -23,11 +21,11 @@ async function Content_Temp(headers, dataTable, page, tableX, tableY, colWidth, 
             fontSize = 16;
         }
 
-        elements.push({
-            text,
+        page.drawText(text, {
             x: getCenteredTextX(tableX, text, colIndex, colWidth, customFont, fontSize),
             y: tableY - 20,
-            size: fontSize
+            size: fontSize,
+            font: customFont,
         });
     });
 
@@ -54,22 +52,12 @@ async function Content_Temp(headers, dataTable, page, tableX, tableY, colWidth, 
                 fontSize = 15;
             }
 
-            elements.push({
-                text,
+            page.drawText(text, {
                 x: getCenteredTextX(tableX, text, colIndex, colWidth, customFont, fontSize),
                 y: rowY + 10,
-                size: fontSize
+                size: fontSize,
+                font: customFont,
             });
-        });
-    });
-
-    // **Batch vẽ để giảm số lần gọi API**
-    elements.forEach(({ text, x, y, size }) => {
-        page.drawText(text, {
-            x,
-            y,
-            size,
-            font: customFont,
         });
     });
 

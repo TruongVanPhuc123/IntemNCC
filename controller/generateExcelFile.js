@@ -24,14 +24,14 @@ const generateExcelFile = catchAsync(async (req, res, next) => {
     const data = readExcelWithUTF8(req.file.buffer);
     if (!data.length) throw new AppError(404, "⚠️ File Excel không có dữ liệu!", "Lỗi tải lên!");
 
-    try {
-        // **Tạo PDF**
-        const pdfDoc = await PDFDocument.create();
-        pdfDoc.registerFontkit(fontkit);
-        const customFont = await pdfDoc.embedFont(fontBytes, { subset: true });
+    // **Tạo PDF**
+    const pdfDoc = await PDFDocument.create();
+    pdfDoc.registerFontkit(fontkit);
+    const customFont = await pdfDoc.embedFont(fontBytes, { subset: true });
 
+    try {
         // **Lấy thông tin nhà cung cấp (chỉ gọi 1 lần)**
-        const DataNCC = await GetDataNCC(maNCC, next);
+        const DataNCC = await GetDataNCC(maNCC);
         const StatusNCC = DataNCC?.StatusNCC === 1;
         const SoLuongTem = DataNCC?.SoLuongTem || 1;
 
