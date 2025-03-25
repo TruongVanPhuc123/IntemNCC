@@ -42,10 +42,8 @@ const generateExcelFile = catchAsync(async (req, res, next) => {
             )
         );
 
-        console.log("---Xử lý xong---")
         // **Gửi file PDF về client**
         downloadPDFFile(pdfDoc, res);
-        console.log("---Dừng hàng đợi---")
     } catch (error) {
         throw new AppError(500, error.message, "Lỗi hệ thống ❌");
     }
