@@ -1,11 +1,9 @@
 import FileZone from "./components/landing/FileZone";
 import LogoSection from "./components/landing/LogoSection";
 import UploadZone from "./components/landing/UploadZone";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-
-const urlBE = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -18,7 +16,7 @@ function App() {
     files.forEach((file) => formData.append("file", file));
 
     try {
-      const response = await axios.post(`${urlBE}/upload/${maNCC}`, formData, {
+      const response = await axios.post(`api/upload/${maNCC}`, formData, {
         responseType: "blob", // Nhận dữ liệu dưới dạng Blob (PDF)
       });
 
