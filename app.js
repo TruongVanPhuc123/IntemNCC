@@ -19,13 +19,13 @@ const limiter = rateLimit({
 var app = express();
 
 app.use(limiter);
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use("/", indexRouter)
+app.use("/api", indexRouter)
 
 app.use((req, res, next) => {
     const err = new Error("Not Found");
