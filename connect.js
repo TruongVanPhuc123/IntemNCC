@@ -7,7 +7,7 @@ const config = {
     password: process.env.DB_PASS,
     server: process.env.DB_HOST,
     database: process.env.DB_NAME,
-    port: 1433,
+    port: process.env.DB_PORT,
     pool: {
         idleTimeoutMillis: 30000, // Tự động đóng kết nối sau 30 giây không hoạt động
     },
