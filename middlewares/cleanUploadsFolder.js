@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const cron = require("node-cron");
 
 function cleanUploadsFolder() {
     const uploadDir = path.join(__dirname, "../uploads");
@@ -21,11 +20,3 @@ function cleanUploadsFolder() {
         });
     });
 }
-
-// Lên lịch chạy mỗi ngày lúc 22:00
-cron.schedule("10 22 * * *", () => {
-    console.log("🕙 Đang chạy cleanUploadsFolder...");
-    cleanUploadsFolder();
-}, {
-    timezone: "Asia/Ho_Chi_Minh"
-});

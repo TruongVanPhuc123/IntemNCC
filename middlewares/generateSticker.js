@@ -1,4 +1,4 @@
-const { formatDate } = require("../middlewares/formatDate");
+const { formatDate } = require("./formatDate");
 const { Content_Temp } = require("./contentTTemp");
 const { CreateBorderLine } = require("./createBorderLine");
 const { QRCode } = require("./QRCode");

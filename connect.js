@@ -9,8 +9,6 @@ const config = {
     database: process.env.DB_NAME,
     port: 1433,
     pool: {
-        max: 50, // Tăng số kết nối tối đa để cải thiện hiệu suất
-        min: 5,
         idleTimeoutMillis: 30000, // Tự động đóng kết nối sau 30 giây không hoạt động
     },
     options: {
@@ -31,17 +29,12 @@ let poolPromise = sql.connect(config)
     });
 
 // Hàm truy vấn tối ưu
-async function query(queryString, params = {}) {
+async function query(queryString, id) {
     try {
         const pool = await poolPromise; // Lấy connection từ pool
         const request = pool.request();
 
-        // Nếu có tham số, dùng prepareStatement để tăng tốc độ và bảo mật
-        Object.keys(params).forEach(key => {
-            request.input(key, params[key]);
-        });
-
-        const result = await request.query(queryString);
+        const result = await request.input("maNCC", sql.Int, id).query(queryString);
         return result.recordset[0];
     } catch (error) {
         throw new AppError(500, error.message, "Query Data Failed ❌");
