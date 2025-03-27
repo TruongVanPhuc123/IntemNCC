@@ -3,7 +3,7 @@ import LogoSection from "./components/landing/LogoSection";
 import UploadZone from "./components/landing/UploadZone";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import apiService from "./app/apiService";
+import axios from "axios";
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -16,7 +16,7 @@ function App() {
     files.forEach((file) => formData.append("file", file));
 
     try {
-      const response = await apiService.post(`/api/upload/${maNCC}`, formData, {
+      const response = await axios.post(`/api/upload/${maNCC}`, formData, {
         responseType: "blob", // Nhận dữ liệu dưới dạng Blob
       });
 
