@@ -3,7 +3,7 @@ import LogoSection from "./components/landing/LogoSection";
 import UploadZone from "./components/landing/UploadZone";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import axios from "axios";
+import apiService from "./app/apiService";
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -16,14 +16,14 @@ function App() {
     files.forEach((file) => formData.append("file", file));
 
     try {
-      const response = await axios.post(`api/upload/${maNCC}`, formData, {
-        responseType: "blob", // Nhận dữ liệu dưới dạng Blob (PDF)
+      const response = await apiService.post(`/api/upload/${maNCC}`, formData, {
+        responseType: "blob", // Nhận dữ liệu dưới dạng Blob
       });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const a = document.createElement("a");
       a.href = url;
-      a.download = "output.pdf";
+      a.download = "processed.xlsx";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -37,13 +37,12 @@ function App() {
       setFiles([]);
       setMaNCC("");
     } catch (error) {
-      console.log(error.message);
       Swal.fire({
         icon: "error",
         text:
           error.response?.status === 400
             ? "⚠️ Hãy kiểm tra lại mã nhà cung cấp!"
-            : "Lỗi kết nối đến server ❌",
+            : `${error.message} ❌`,
       });
     }
     setUploading(false);
