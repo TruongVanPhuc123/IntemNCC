@@ -1,19 +1,8 @@
 const { AppError, catchAsync } = require("../helpers/utils");
-const fontkit = require("@pdf-lib/fontkit");
-const { readExcelWithUTF8 } = require("../middlewares/readExcelFile");
 const { GetDataNCC } = require("../middlewares/getNCC");
-const { downloadPDFFile } = require("../middlewares/dowloadPDF_File");
-const { generateStickers } = require("../middlewares/generateSticker");
-
-const { PDFDocument } = require("pdf-lib");
+const { processExcel } = require('../middlewares/processExcel')
 const fs = require("fs");
-const path = require("path");
 
-const fontPath = path.join(__dirname, "../fonts/Roboto-Italic-VariableFont_wdth,wght.ttf");
-const fontBytes = fs.readFileSync(fontPath); // Đọc font **chỉ 1 lần** khi server khởi động
-
-const pageSize = [595, 842]; // A4
-const { width, height } = { width: pageSize[0], height: pageSize[1] };
 
 
 const generateExcelFile = catchAsync(async (req, res, next) => {
@@ -21,29 +10,23 @@ const generateExcelFile = catchAsync(async (req, res, next) => {
     if (!maNCC) throw new AppError(400, "⚠️ Vui lòng nhập mã nhà cung cấp!", "Lỗi tải lên!");
     if (!req.file) throw new AppError(400, "⚠️ Vui lòng tải lên file Excel!", "Lỗi tải lên!");
 
-    const data = readExcelWithUTF8(req.file.buffer);
-    if (!data.length) throw new AppError(404, "⚠️ File Excel không có dữ liệu!", "Lỗi tải lên!");
-
-    // **Tạo PDF**
-    const pdfDoc = await PDFDocument.create();
-    pdfDoc.registerFontkit(fontkit);
-    const customFont = await pdfDoc.embedFont(fontBytes, { subset: true });
-
     try {
         // **Lấy thông tin nhà cung cấp (chỉ gọi 1 lần)**
         const DataNCC = await GetDataNCC(maNCC);
-        const StatusNCC = DataNCC?.StatusNCC === 1;
-        const SoLuongTem = DataNCC?.SoLuongTem || 1;
+        const userStatus = DataNCC?.StatusNCC;
+        const SoLuongTem = DataNCC?.SoLuongTem;
+        const fileBuffer = req.file.buffer;
 
-        // **Xử lý song song tất cả hàng trong Excel**
-        await Promise.all(
-            data.map((row) =>
-                generateStickers(StatusNCC ? SoLuongTem : Number(row["Số Kiện NCC"]), pdfDoc, row, pageSize, height, width, maNCC, customFont)
-            )
-        );
+        const excelBuffer = processExcel(fileBuffer, userStatus, SoLuongTem);
 
-        // **Gửi file PDF về client**
-        downloadPDFFile(pdfDoc, res);
+        // // Gửi file Excel về client
+        // res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        // res.setHeader("Content-Disposition", 'attachment; filename="processed.xlsx"');
+        // res.send(excelBuffer);
+
+
+
+
     } catch (error) {
         throw new AppError(500, error.message, "Lỗi hệ thống ❌");
     }
