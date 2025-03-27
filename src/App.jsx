@@ -27,7 +27,7 @@ function App() {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const a = document.createElement("a");
       a.href = url;
-      a.download = "processed.xlsx";
+      a.download = "output.pdf";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
