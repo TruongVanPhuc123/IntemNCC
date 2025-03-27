@@ -16,13 +16,9 @@ function App() {
     files.forEach((file) => formData.append("file", file));
 
     try {
-      const response = await apiService.post(
-        `http://113.161.162.83:3128/api/upload/${maNCC}`,
-        formData,
-        {
-          responseType: "blob", // Nhận dữ liệu dưới dạng Blob
-        }
-      );
+      const response = await apiService.post(`/api/upload/${maNCC}`, formData, {
+        responseType: "blob", // Nhận dữ liệu dưới dạng Blob
+      });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const a = document.createElement("a");
