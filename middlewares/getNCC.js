@@ -21,7 +21,7 @@ async function GetDataNCC(maNCC) {
         }
 
         // Cache dữ liệu với TTL là 1 giờ
-        await redis.set(`ncc:${maNCC}`, JSON.stringify(data), "EX", 3600);
+        await redis.set(`ncc:${maNCC}`, JSON.stringify(data), "EX", 86400);
 
         return data;
     } catch (error) {

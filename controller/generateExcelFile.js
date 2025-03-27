@@ -34,16 +34,11 @@ const generateExcelFile = catchAsync(async (req, res, next) => {
         const DataNCC = await GetDataNCC(maNCC);
         const StatusNCC = DataNCC?.StatusNCC === 1;
         const SoLuongTem = DataNCC?.SoLuongTem || 1;
+        const TenNCC = DataNCC?.TenNCC || "";
 
-        // **Xử lý song song tất cả hàng trong Excel**
-        await Promise.all(
-            data.map((row) =>
-                generateStickers(StatusNCC ? SoLuongTem : Number(row["Số Kiện NCC"]), pdfDoc, row, pageSize, height, width, maNCC, customFont)
-            )
-        );
 
         // **Gửi file PDF về client**
-        downloadPDFFile(pdfDoc, res);
+        // downloadPDFFile(pdfDoc, res);
     } catch (error) {
         throw new AppError(500, error.message, "Lỗi hệ thống ❌");
     }
