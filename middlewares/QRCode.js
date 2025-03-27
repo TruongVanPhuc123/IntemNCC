@@ -8,10 +8,10 @@ async function QRCode(soBooking, maNCC, maSieuThi, soKienNCC, soHoaDonNCC, pdfDo
     const qrEmbed = await pdfDoc.embedPng(qrDataUrl);
 
     // **Vị trí và kích thước QR**
-    const qrWidth = 90;
-    const qrHeight = 80;
-    const qrX = tableX + 4.5 * colWidth + (colWidth - qrWidth) / 2;
-    const qrY = tableY - 4.8 * rowHeight;
+    const qrWidth = 80;
+    const qrHeight = 60;
+    const qrX = tableX + 3.5 * colWidth + (colWidth - qrWidth) / 2;
+    const qrY = tableY - 4.9 * rowHeight;
 
     // **Vẽ QR lên PDF**
     page.drawImage(qrEmbed, {

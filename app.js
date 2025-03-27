@@ -45,12 +45,5 @@ app.use((err, req, res, next) => {
     );
 });
 
-if (global.gc) {
-    setInterval(() => {
-        global.gc();
-        console.log("Forced garbage collection");
-    }, 60000); // Thu gom rác mỗi 60s
-}
-
 
 module.exports = app;
