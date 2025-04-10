@@ -37,13 +37,17 @@ function App() {
       setFiles([]);
       setMaNCC("");
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        text:
-          error.response?.status === 400
-            ? "⚠️ Hãy kiểm tra lại mã nhà cung cấp!"
-            : `${error.message} ❌`,
-      });
+      if (error.response?.data instanceof Blob) {
+        const text = await error.response.data.text();
+        const json = JSON.parse(text);
+        console.log("📦 Lỗi từ server:", json);
+        Swal.fire({
+          icon: "error",
+          text: json?.errors,
+        });
+      } else {
+        console.log("❌ Lỗi không rõ:", error.message);
+      }
     }
     setUploading(false);
   };
