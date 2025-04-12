@@ -3,11 +3,11 @@ const { AppError } = require("./helpers/utils");
 require("dotenv").config();
 
 const config = {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    server: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    port: Number(process.env.DB_PORT),
+    user: "sa",
+    password: "1231",
+    server: "113.161.162.83",
+    database: "InTemNCC",
+    port: 24032,
     pool: {
         idleTimeoutMillis: 30000, // Tự động đóng kết nối sau 30 giây không hoạt động
     },
@@ -24,20 +24,19 @@ let poolPromise = sql.connect(config)
         return pool;
     })
     .catch(err => {
-        console.error("❌ Lỗi kết nối:", err);
-        throw new AppError(500, err.message, "Database Connection Failed ❌");
+        throw new AppError(500, err.message, "❌ Kết nối SQL Server thất bại!");
     });
 
 // Hàm truy vấn tối ưu
-async function query(queryString, id) {
+async function query(queryString, id, input) {
     try {
         const pool = await poolPromise; // Lấy connection từ pool
         const request = pool.request();
 
-        const result = await request.input("maNCC", sql.Int, id).query(queryString);
+        const result = await request.input(input, sql.Int, id).query(queryString);
         return result.recordset[0];
     } catch (error) {
-        throw new AppError(500, error.message, "Query Data Failed ❌");
+        throw new AppError(500, error.message, "❌ Truy vấn dữ liệu thất bại!");
     }
 }
 

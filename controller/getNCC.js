@@ -4,7 +4,7 @@ const { AppError } = require("../helpers/utils");
 
 const redis = new Redis(); // Kết nối Redis, mặc định chạy trên localhost:6379
 
-async function GetDataNCC(maNCC) {
+const GetDataNCC = async (maNCC) => {
     try {
         // Kiểm tra cache Redis
         const cachedData = await redis.get(`ncc:${maNCC}`);
@@ -14,8 +14,7 @@ async function GetDataNCC(maNCC) {
         }
 
         // Truy vấn database
-        const data = await query("SELECT TOP 1 * FROM NhaCungCap WHERE MaNCC = @maNCC", maNCC);
-
+        const data = await query("SELECT * FROM NhaCungCap WHERE MaNCC = @maNCC", maNCC, "maNCC");
         if (!data || data.length === 0) {
             throw new AppError(404, "⚠️ Không tìm thấy nhà cung cấp!", "Get data failed!");
         }
@@ -25,8 +24,7 @@ async function GetDataNCC(maNCC) {
 
         return data;
     } catch (error) {
-        console.error("Lỗi khi truy vấn NCC:", error);
-        throw new AppError(500, error.message || "Lỗi không xác định", "Query NCC Error!");
+        throw new AppError(500, error.message || "Lỗi không xác định", "Query NCC Failed!");
     }
 }
 

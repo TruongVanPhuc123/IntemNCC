@@ -1,13 +1,11 @@
 const xlsx = require("xlsx");
-const { formatDate } = require("./formatDate");
 
-function processExcel(fileBuffer, userStatus, SoLuongTem) {
+const processExcel = (fileBuffer) => {
     const workbook = xlsx.read(fileBuffer, { type: "buffer", cellText: false, cellDates: true });
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
-    let data = xlsx.utils.sheet_to_json(sheet);
+    const data = xlsx.utils.sheet_to_json(sheet);
     return data;
-
 }
 
 module.exports = { processExcel };

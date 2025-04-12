@@ -12,13 +12,13 @@ async function downloadPDFFile(pdfDoc, res) {
 
         pdfStream.pipe(res); // Gửi dữ liệu về client theo từng phần
         pdfStream.on("error", (err) => {
-            console.error("❌ Lỗi stream PDF:", err);
             if (!res.headersSent) res.status(500).send("Lỗi khi tải file PDF!");
+            throw new AppError(500, "Lỗi stream PDF!", err.message);
         });
 
     } catch (error) {
-        console.error("❌ Lỗi tạo file PDF:", error);
         if (!res.headersSent) res.status(500).send("Lỗi khi tạo file PDF!");
+        throw new AppError(500, "Lỗi khi tạo file PDF!", error.message);
     }
 }
 
