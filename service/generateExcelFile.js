@@ -32,14 +32,14 @@ const generateExcelFile = catchAsync(async (req, res, next) => {
         const customFont = await pdfDoc.embedFont(fontBytes, { subset: true });
 
         // Thông tin NCC
-        const { TenNCC, SoLuongTem = 1, StatusNCC } = await GetDataNCC(maNCC);
+        const { TenNCC, SoLuongTem, Status } = await GetDataNCC(maNCC);
         let page = null;
         let stickerOnPage = 0;
 
         // Tạo tem
         for (const row of data) {
             const soKien = Number(row["Số Kiện NCC"]) || 0;
-            const quantity = soKien === 0 ? 1 : (StatusNCC === 1 ? SoLuongTem : soKien);
+            const quantity = soKien === 0 ? 1 : (Status === 1 ? SoLuongTem : soKien);
 
             ({ page, stickerOnPage } = await generateTem(
                 quantity,

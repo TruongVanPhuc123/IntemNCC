@@ -18,7 +18,6 @@ const GetDataNCC = async (maNCC) => {
         if (!data || data.length === 0) {
             throw new AppError(404, "⚠️ Không tìm thấy nhà cung cấp!", "Get data failed!");
         }
-
         // Cache dữ liệu với TTL là 1 giờ
         await redis.set(`ncc:${maNCC}`, JSON.stringify(data), "EX", 86400);
 
