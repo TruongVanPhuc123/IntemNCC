@@ -1,17 +1,10 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trash2, CloudUpload } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Input } from "../ui/input";
 
-export default function FileZone({
-  files,
-  setFiles,
-  uploadFiles,
-  maNCC,
-  uploading,
-  setMaNCC,
-}) {
+export default function FileZone({ files, setFiles, maNCC, setMaNCC }) {
   const removeFile = (fileName) => {
     setFiles(files.filter((file) => file.name !== fileName));
   };
@@ -43,14 +36,6 @@ export default function FileZone({
         value={maNCC}
         onChange={(e) => setMaNCC(e.target.value)}
       />
-      <Button
-        onClick={uploadFiles}
-        disabled={!maNCC || maNCC.length < 5 || uploading}
-        className="w-full mt-4 bg-red-500 hover:bg-red-600 cursor-pointer text-white"
-      >
-        {uploading ? "Đang Xử Lý..." : "Convert File"}{" "}
-        <CloudUpload className="ml-2 h-5 w-5" />
-      </Button>
     </div>
   );
 }

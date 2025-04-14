@@ -4,6 +4,8 @@ import UploadZone from "./components/landing/UploadZone";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { CloudUpload } from "lucide-react";
+import { Button } from "./components/ui/button";
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -70,6 +72,15 @@ function App() {
           setMaNCC={setMaNCC}
         />
       )}
+
+      <Button
+        onClick={uploadFiles}
+        disabled={!maNCC || maNCC.length < 5 || uploading}
+        className="w-full mt-4 bg-red-500 hover:bg-red-600 cursor-pointer text-white"
+      >
+        {uploading ? "Đang Xử Lý..." : "Convert File"}{" "}
+        <CloudUpload className="ml-2 h-5 w-5" />
+      </Button>
     </div>
   );
 }
