@@ -21,6 +21,11 @@ const generateTem = async (quantity, TenNCC, pdfDoc, row, pageSize, height, widt
     const ngayGiao = row["Ngày giao dự kiến"];
     const qrCodeText = `${maBooking}-${maNCC}-${maStore}-${soKien}-${soHoaDon}`;
 
+    if (!maBooking) throw new AppError(404, "📦 Thiếu Mã Booking!", "Lỗi tạo tem")
+    if (!ngayGiao) throw new AppError(404, "🏷️ Thiếu Ngày Giao Dự Kiến!", "Lỗi tạo tem")
+    if (!soKien) throw new AppError(404, "📦 Thiếu Số Kiện!", "Lỗi tạo tem")
+    if (!soHoaDon) throw new AppError(404, "📦 Thiếu Số Hóa Đơn!", "Lỗi tạo tem")
+
     try {
         console.log(`\n==============================`);
         console.log(`🏷️ MÃ NHÀ CUNG CẤP = ${maNCC}`);
@@ -58,7 +63,8 @@ const generateTem = async (quantity, TenNCC, pdfDoc, row, pageSize, height, widt
         console.log(`==============================\n`);
     } catch (error) {
         genrateErrorTem(maStore, maBooking, maNCC, error);
-        throw new AppError(400, "❌ Đã xảy ra lỗi khi in tem", error.message);
+        console.log(error.message)
+        throw new AppError(404, error.message, "❌ Đã xảy ra lỗi khi in tem");
     }
 
     return { page, stickerOnPage };

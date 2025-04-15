@@ -20,7 +20,7 @@ const config = {
 const GetStore = async (maStore, forceQuery = false) => {
     let pool;
     try {
-        if (!maStore) throw new Error("Thiếu maStore!");
+        if (!maStore) throw new Error("Thiếu Mã Store!");
 
         if (!forceQuery) {
             const cachedData = await redis.get(`store:${maStore}`);

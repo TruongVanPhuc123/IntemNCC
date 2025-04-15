@@ -38,7 +38,7 @@ const generateExcelFile = catchAsync(async (req, res, next) => {
 
         // Tạo tem
         for (const row of data) {
-            const soKien = Number(row["Số Kiện NCC"]) || 0;
+            const soKien = Number(row["Số Kiện NCC"]);
             const quantity = soKien === 0 ? 1 : (Status === 1 ? SoLuongTem : soKien);
 
             ({ page, stickerOnPage } = await generateTem(
@@ -59,7 +59,7 @@ const generateExcelFile = catchAsync(async (req, res, next) => {
         // Tải file
         downloadPDFFile(pdfDoc, res);
     } catch (error) {
-        throw new AppError(500, "Lỗi hệ thống ❌", error.message);
+        throw new AppError(500, error.message, "Lỗi hệ thống ❌");
     }
 });
 
