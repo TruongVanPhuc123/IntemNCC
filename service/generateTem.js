@@ -23,7 +23,7 @@ const generateTem = async (quantity, TenNCC, pdfDoc, row, pageSize, height, widt
 
     if (!maBooking) throw new AppError(404, "📦 Thiếu Mã Booking!", "Lỗi tạo tem")
     if (!ngayGiao) throw new AppError(404, "🏷️ Thiếu Ngày Giao Dự Kiến!", "Lỗi tạo tem")
-    if (!soKien) throw new AppError(404, "📦 Thiếu Số Kiện!", "Lỗi tạo tem")
+    if (soKien === NaN) throw new AppError(404, "📦 Thiếu Số Kiện!", "Lỗi tạo tem")
     if (!soHoaDon) throw new AppError(404, "📦 Thiếu Số Hóa Đơn!", "Lỗi tạo tem")
 
     try {
@@ -38,7 +38,7 @@ const generateTem = async (quantity, TenNCC, pdfDoc, row, pageSize, height, widt
         const dataTable = [
             [`${TenNCC}`, ``, "", `${maBooking}`, `${soHoaDon}`],
             ["Siêu thị/Cửa hàng:", `    ${maStore}`, `${soKien}`, `${qrCodeText}`, ""],
-            [`${result?.TenStore}`, "", "", "", ""],
+            [`${result?.TenStore.trim()}`, "", "", "", ""],
             ["Ngày đến TTPP:", `${formatDate(ngayGiao)}`, "Hàng KM TP HSD Ngắn", "", ""],
         ];
 

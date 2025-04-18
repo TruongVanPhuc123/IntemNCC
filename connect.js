@@ -3,13 +3,13 @@ const { AppError } = require("./helpers/utils");
 require("dotenv").config();
 
 const config = {
-    user: "sa",
-    password: "1231",
-    server: "113.161.162.83",
-    database: "InTemNCC",
-    port: 24032,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    server: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    port: Number(process.env.DB_PORT),
     pool: {
-        idleTimeoutMillis: 30000, // Tự động đóng kết nối sau 30 giây không hoạt động
+        idleTimeoutMillis: 30000,
     },
     options: {
         encrypt: false, // Tắt SSL nếu không cần thiết
@@ -27,17 +27,33 @@ let poolPromise = sql.connect(config)
         throw new AppError(500, err.message, "❌ Kết nối SQL Server thất bại!");
     });
 
-// Hàm truy vấn tối ưu
-async function query(queryString, id, input) {
+const getPool = async () => {
     try {
-        const pool = await poolPromise; // Lấy connection từ pool
-        const request = pool.request();
+        const pool = await poolPromise;
+        if (!pool.connected) {
+            console.warn("⚠️ Pool mất kết nối, tạo lại...");
+            poolPromise = sql.connect(config);
+            return await poolPromise;
+        }
+        return pool;
+    } catch (error) {
+        console.warn("⚠️ Pool lỗi, tạo lại...");
+        poolPromise = sql.connect(config);
+        return await poolPromise;
+    }
+}
 
+// Hàm truy vấn tối ưu
+const query = async (queryString, id, input) => {
+    try {
+        const pool = await getPool();
+        const request = pool.request();
         const result = await request.input(input, sql.Int, id).query(queryString);
         return result.recordset[0];
     } catch (error) {
         throw new AppError(500, error.message, "❌ Truy vấn dữ liệu thất bại!");
     }
 }
+
 
 module.exports = { query };

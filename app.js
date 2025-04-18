@@ -4,6 +4,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
+var app = express();
+app.set('trust proxy', 'loopback');
 
 var indexRouter = require('./routes/index');
 const { sendResponse } = require('./helpers/utils');
@@ -16,7 +18,6 @@ const limiter = rateLimit({
 });
 
 
-var app = express();
 
 app.use(limiter);
 app.use(cors({ origin: '*' }));
