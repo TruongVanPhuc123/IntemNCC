@@ -54,31 +54,28 @@ function App() {
     setUploading(false);
   };
   return (
-    <div className="w-full flex flex-col items-center">
-      {" "}
-      <div className="max-w-lg mx-10 p-6 space-y-6 bg-white shadow-lg rounded-xl mt-2">
-        {/* Header với Logo */}
-        <LogoSection />
+    <div className="max-w-lg mx-10 p-6 space-y-6 bg-white shadow-lg rounded-xl mt-2">
+      {/* Header với Logo */}
+      <LogoSection />
 
-        {/* Khu vực tải file */}
-        <UploadZone files={files} setFiles={setFiles} />
+      {/* Khu vực tải file */}
+      <UploadZone files={files} setFiles={setFiles} />
 
-        {/* Hiển thị file đã chọn */}
-        {files.length > 0 && (
-          <FileZone
-            files={files}
-            uploadFiles={uploadFiles}
-            maNCC={maNCC}
-            uploading={uploading}
-            setFiles={setFiles}
-            setMaNCC={setMaNCC}
-          />
-        )}
-      </div>
+      {/* Hiển thị file đã chọn */}
+      {files.length > 0 && (
+        <FileZone
+          files={files}
+          uploadFiles={uploadFiles}
+          maNCC={maNCC}
+          uploading={uploading}
+          setFiles={setFiles}
+          setMaNCC={setMaNCC}
+        />
+      )}
       <Button
         onClick={uploadFiles}
         disabled={!maNCC || maNCC.length < 5 || uploading}
-        className="md:w-[25%] w-[50%] mt-4 bg-red-500 hover:bg-red-600 cursor-pointer text-white"
+        className="w-full mt-4 bg-red-500 hover:bg-red-600 cursor-pointer text-white"
       >
         {uploading ? "Đang Xử Lý..." : "Convert File"}{" "}
         <CloudUpload className="ml-2 h-5 w-5" />
