@@ -28,7 +28,7 @@ const generateTem = async (quantity, TenNCC, pdfDoc, row, pageSize, height, widt
 
     try {
         console.log(`\n==============================`);
-        console.log(`🏷️ MÃ NHÀ CUNG CẤP = ${maNCC}`);
+        console.log(`🏷️   MÃ NHÀ CUNG CẤP = ${maNCC}`);
         console.log(`🔍 Nhận vào maStore = ${maStore}`);
 
         const result = await GetStore(maStore);

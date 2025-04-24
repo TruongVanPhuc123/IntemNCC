@@ -18,7 +18,7 @@ const limiter = rateLimit({
 });
 
 
-
+app.get('/favicon.ico', (req, res) => res.status(204).end())
 app.use(limiter);
 app.use(cors({ origin: '*' }));
 app.use(logger('dev'));
