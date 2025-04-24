@@ -54,7 +54,7 @@ function App() {
     setUploading(false);
   };
   return (
-    <div className="max-w-lg mx-10 p-6 space-y-6 bg-white shadow-lg rounded-xl mt-2">
+    <div className="max-w-lg mx-auto p-6 space-y-6 bg-white shadow-lg rounded-xl mt-2">
       {/* Header với Logo */}
       <LogoSection />
 
