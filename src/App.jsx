@@ -72,14 +72,19 @@ function App() {
           setMaNCC={setMaNCC}
         />
       )}
-      <Button
+      <button
         onClick={uploadFiles}
         disabled={!maNCC || maNCC.length < 5 || uploading}
-        className="w-full mt-4 bg-red-500 hover:bg-red-600 cursor-pointer text-white"
+        className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 
+        border border-black hover:border-red-800
+        focus:outline-none focus:ring-4 focus:ring-red-300 
+        text-black font-medium py-2 px-4 rounded-lg shadow-lg 
+        transform transition-all duration-200 hover:scale-105 
+        disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {uploading ? "Đang Xử Lý..." : "Convert File"}{" "}
-        <CloudUpload className="ml-2 h-5 w-5" />
-      </Button>
+        {uploading ? "Đang Xử Lý..." : "Convert File"}
+        <CloudUpload />
+      </button>
     </div>
   );
 }
