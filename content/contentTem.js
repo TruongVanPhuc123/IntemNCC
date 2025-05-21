@@ -75,6 +75,7 @@ const Content_Tem = (
         lineHeight,
         lines
       ); // chỉnh vị trí textX (chiều dọc)
+
       if (rowIndex === 1 && colIndex === 2) fontSize = 40; // Số Kiện
 
       lines.forEach((line, i) => {

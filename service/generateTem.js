@@ -85,25 +85,6 @@ const generateTem = async (
 
       const tableY = height - stickerOnPage * 190 - 75;
 
-      CreateBorderLine(
-        rowCount,
-        rowHeight,
-        tableY,
-        tableX,
-        page,
-        colCount,
-        colWidth
-      );
-      Content_Tem(
-        headers,
-        dataTable,
-        page,
-        tableX,
-        tableY,
-        colWidth,
-        rowHeight,
-        customFont
-      );
       await QRCode(
         maBooking,
         maNCC,
@@ -116,6 +97,27 @@ const generateTem = async (
         colWidth,
         rowHeight,
         page
+      );
+
+      CreateBorderLine(
+        rowCount,
+        rowHeight,
+        tableY,
+        tableX,
+        page,
+        colCount,
+        colWidth
+      );
+
+      Content_Tem(
+        headers,
+        dataTable,
+        page,
+        tableX,
+        tableY,
+        colWidth,
+        rowHeight,
+        customFont
       );
 
       stickerOnPage++;
