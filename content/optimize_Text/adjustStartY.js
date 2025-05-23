@@ -11,7 +11,7 @@ const adjustStartY = (
 
   if (rowIndex === 0 && colIndex === 0 && lines.length > 1) return startY + 8; // dịch TenNCC lên 8pt nếu số dòng > 1
   if (rowIndex === 3 && colIndex === 2) return startY + 8; // dịch Hang KM HSD Ngan lên 8pt
-  if (rowIndex === 1 && colIndex === 3) return startY + 20; // dịch QrText lên 18pt
+  if (rowIndex === 3 && colIndex === 3) return startY + 7; // dịch QrText lên 10pt
   if (rowIndex === 1 && colIndex === 2) return startY - 10; // dịch Số Kiện xuống 10pt
   return startY;
 };

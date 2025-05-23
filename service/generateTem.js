@@ -6,6 +6,23 @@ const { GetStore } = require("../controller/GetStore");
 const { AppError } = require("../helpers/utils");
 const { genrateErrorTem } = require("./genrateErrorTem");
 
+function validateNumberInput(input, message) {
+  // Xóa khoảng trắng
+  const cleaned = String(input).replace(/\s+/g, "");
+  // Kiểm tra nếu cleaned không phải là một số
+  if (message.includes("QR")) {
+    return String(cleaned);
+  } else if (isNaN(cleaned) || cleaned === "") {
+    throw new AppError(
+      400,
+      `❌ ${message} không phải là số !`,
+      "Lỗi file Excel!"
+    );
+  }
+
+  return Number(cleaned);
+}
+
 const generateTem = async (
   quantity,
   TenNCC,
@@ -51,18 +68,24 @@ const generateTem = async (
 
     const headers = [
       "NCC:",
-      `${Number(maNCC)}`,
+      `${validateNumberInput(maNCC, "Mã nhà cung cấp")}`,
       "Tổng Số Kiện",
       "Số Booking",
       "Số Hóa Đơn",
     ];
     const dataTable = [
-      [`${TenNCC}`, ``, "", `${maBooking}`, `${soHoaDon}`],
+      [
+        `${TenNCC}`,
+        ``,
+        "",
+        `${validateNumberInput(maBooking, "Mã booking")}`,
+        `${validateNumberInput(soHoaDon, "Số hóa đơn")}`,
+      ],
       [
         "Siêu thị/Cửa hàng:",
-        `    ${maStore}`,
-        `${soKien}`,
-        `${qrCodeText}`,
+        `    ${validateNumberInput(maStore, "Mã siêu thị")}`,
+        `${validateNumberInput(soKien, "Số kiện NCC")}`,
+        "",
         "",
       ],
       [`${result?.TenStore.trim()}`, "", "", "", ""],
@@ -70,7 +93,7 @@ const generateTem = async (
         "Ngày đến TTPP:",
         `${formatDate(ngayGiao)}`,
         "Hàng KM TP HSD Ngắn",
-        "",
+        `${validateNumberInput(qrCodeText, "QR Code")}`,
         "",
       ],
     ];

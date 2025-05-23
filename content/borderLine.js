@@ -2,9 +2,9 @@ const { rgb } = require("pdf-lib");
 
 // Merge vùng: "rowIndex-colStart-colEnd"
 const mergedCellAreas = new Set([
-  "1-0-1",
+  "1-0-1", // TenNCC
   "2-3-4",
-  "3-0-1",
+  "3-0-1", //TenStore
   "3-3-4",
   "3-3-4",
   "4-3-4",

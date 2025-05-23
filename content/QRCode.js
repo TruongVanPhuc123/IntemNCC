@@ -20,10 +20,10 @@ const QRCode = async (
   const qrEmbed = await pdfDoc.embedPng(qrDataUrl);
 
   // **Vị trí và kích thước QR**
-  const qrWidth = 90;
-  const qrHeight = 80;
-  const qrX = tableX + 3.5 * colWidth + (colWidth - qrWidth) / 2;
-  const qrY = tableY - 4.9 * rowHeight;
+  const qrWidth = 110;
+  const qrHeight = 100;
+  const qrX = tableX + 3.5 * colWidth + (colWidth - qrWidth) / 2; // Căn giữa
+  const qrY = tableY - 4.9 * rowHeight; //Số lớn thì lên - nhỏ xuống
 
   // **Vẽ QR lên PDF**
   page.drawImage(qrEmbed, {
