@@ -10,7 +10,7 @@ function validateNumberInput(input, message) {
   // Xóa khoảng trắng
   const cleaned = String(input).replace(/\s+/g, "");
   // Kiểm tra nếu cleaned không phải là một số
-  if (message.includes("QR")) {
+  if (message === "QR Code") {
     return String(cleaned);
   } else if (isNaN(cleaned) || cleaned === "") {
     throw new AppError(
@@ -79,7 +79,7 @@ const generateTem = async (
         ``,
         "",
         `${validateNumberInput(maBooking, "Mã booking")}`,
-        `${validateNumberInput(soHoaDon, "Số hóa đơn")}`,
+        `${String(soHoaDon).trim()}`,
       ],
       [
         "Siêu thị/Cửa hàng:",
