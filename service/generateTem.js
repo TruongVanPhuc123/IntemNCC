@@ -40,7 +40,7 @@ const generateTem = async (
   const rowHeight = 32;
   const colWidth = (width - marginX * 2) / colCount;
 
-  const maStore = row["Mã siêu thị"];
+  const maStore = Number(row["Mã siêu thị"]);
   const soKien = Number(row["Số Kiện NCC"]);
   const soHoaDon = row["Số Hóa Đơn NCC"];
   const maBooking = row["Mã booking"];
@@ -53,6 +53,8 @@ const generateTem = async (
     throw new AppError(404, "🏷️ Thiếu Ngày Giao Dự Kiến!", "Lỗi tạo tem");
   if (isNaN(soKien))
     throw new AppError(404, "📦 Thiếu Số Kiện!", "Lỗi tạo tem");
+  if (!maStore || isNaN(maStore))
+    throw new AppError(404, "📦 Thiếu Mã Siêu Thị!", "Lỗi tạo tem");
   if (!soHoaDon) throw new AppError(404, "📦 Thiếu Số Hóa Đơn!", "Lỗi tạo tem");
 
   try {
