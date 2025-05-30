@@ -5,6 +5,7 @@ const { CreateBorderLine } = require("../content/borderLine");
 const { GetStore } = require("../controller/GetStore");
 const { AppError } = require("../helpers/utils");
 const { genrateErrorTem } = require("./genrateErrorTem");
+const { styleText } = require("node:util");
 
 function validateNumberInput(input, message) {
   // Xóa khoảng trắng
@@ -13,11 +14,7 @@ function validateNumberInput(input, message) {
   if (message === "QR Code") {
     return String(cleaned);
   } else if (isNaN(cleaned) || cleaned === "") {
-    throw new AppError(
-      400,
-      `❌ ${message} không phải là số !`,
-      "Lỗi file Excel!"
-    );
+    throw new AppError(400, `❌ ${message} không phải số !`, "Lỗi file Excel!");
   }
 
   return Number(cleaned);
@@ -60,8 +57,11 @@ const generateTem = async (
 
   try {
     console.log(`\n==============================`);
-    console.log(`🏷️   MÃ NHÀ CUNG CẤP = ${maNCC}`);
-    console.log(`🔍 Nhận vào maStore = ${maStore}`);
+    // console.log(styleText("cyan", `🏷️  MÃ NHÀ CUNG CẤP = ${maNCC}`));
+    console.log(
+      styleText("bold", styleText("yellow", `🏷️  MÃ NHÀ CUNG CẤP = ${maNCC}`))
+    );
+    console.log(styleText("cyan", `🔍 Nhận vào maStore = ${maStore}`));
 
     const result = await GetStore(maStore);
     console.log("📦 Lấy từ Redis cache");
@@ -146,7 +146,7 @@ const generateTem = async (
       stickerOnPage++;
     }
 
-    console.log(`✅ ĐÃ HOÀN THÀNH: ${quantity} tem`);
+    console.log(styleText("green", `✅ ĐÃ HOÀN THÀNH: ${quantity} tem`));
     console.log(`==============================\n`);
   } catch (error) {
     genrateErrorTem(maStore, maBooking, maNCC, error);
