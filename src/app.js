@@ -6,7 +6,6 @@ const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 var app = express();
 app.set("trust proxy", "loopback");
-const { styleText } = require("node:util");
 
 var indexRouter = require("./routes/index");
 const { sendResponse } = require("./helpers/utils");
@@ -34,7 +33,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log(styleText("bold", styleText("red", `❌ ${err}`)));
+  console.log("❌", err);
   return sendResponse(
     res,
     res.statusCode ? err.statusCode : 500,

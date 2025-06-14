@@ -5,9 +5,11 @@ const fontkit = require("@pdf-lib/fontkit");
 
 const { AppError, catchAsync } = require("../helpers/utils");
 const { processExcel } = require("../middlewares/processExcel");
-const { GetDataNCC } = require("../controller/getNCC");
+const { GetNCC } = require("../database/getNCC");
 const { downloadPDFFile } = require("../helpers/dowloadPDF_File");
 const { generateTem } = require("./generateTem");
+const { styleText } = require("node:util");
+const { appendMaNCC } = require("../middlewares/appendMaNCC");
 
 const fontPath = path.join(
   __dirname,
@@ -42,14 +44,16 @@ const generateExcelFile = catchAsync(async (req, res, next) => {
     const customFont = await pdfDoc.embedFont(fontBytes, { subset: true });
 
     // Thông tin NCC
-    const { TenNCC, SoLuongTem, Status } = await GetDataNCC(maNCC);
+    const { TenNCC, SoLuongTem, Status } = await GetNCC(maNCC);
     let page = null;
     let stickerOnPage = 0;
+    let totalQuantity = 0;
 
     // Tạo tem
     for (const row of data) {
       const soKien = Number(row["Số Kiện NCC"]);
       const quantity = soKien === 0 ? 1 : Status === 1 ? SoLuongTem : soKien;
+      totalQuantity += quantity;
 
       ({ page, stickerOnPage } = await generateTem(
         quantity,
@@ -57,17 +61,23 @@ const generateExcelFile = catchAsync(async (req, res, next) => {
         pdfDoc,
         row,
         pageSize,
-        height,
         width,
+        height,
         maNCC,
         customFont,
         page,
-        stickerOnPage
+        stickerOnPage,
+        totalQuantity
       ));
     }
+    console.log("");
+    console.log(styleText("yellow", `🏷️  MÃ NHÀ CUNG CẤP = ${maNCC}`));
+    console.log(styleText("green", `✅ ĐÃ HOÀN THÀNH: ${totalQuantity} tem`));
+    console.log("");
 
     // Tải file
     downloadPDFFile(pdfDoc, res);
+    appendMaNCC(maNCC, totalQuantity);
   } catch (error) {
     throw new AppError(400, error.message, "Lỗi tạo tem ❌");
   }

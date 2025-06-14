@@ -4,12 +4,12 @@ const { AppError } = require("../helpers/utils");
 
 const redis = new Redis(); // Kết nối Redis, mặc định chạy trên localhost:6379
 
-const GetDataNCC = async (maNCC) => {
+const GetNCC = async (maNCC) => {
   try {
     // Kiểm tra cache Redis
     const cachedData = await redis.get(`ncc:${maNCC}`);
     if (cachedData) {
-      console.log("Redis Running...");
+      // console.log("Redis Running...");
       return JSON.parse(cachedData);
     }
 
@@ -39,4 +39,4 @@ const GetDataNCC = async (maNCC) => {
   }
 };
 
-module.exports = { GetDataNCC };
+module.exports = { GetNCC };
