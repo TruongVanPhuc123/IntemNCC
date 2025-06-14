@@ -8,11 +8,11 @@ const tutorials = [
     title: "🏷️ Mã Booking Không Phải Số",
     description:
       "Xảy ra khi Mã Booking trong File Excel không giống Mã Booking vừa tạo trên Website TMS.",
-    duration: "1:10",
+    duration: "1:08",
     views: "1K",
     category: "Booking",
     videoUrl:
-      "https://res.cloudinary.com/dm88fvsss/video/upload/v1749863305/Video_Intem_Error/mabooking_Text.mp4",
+      "https://res.cloudinary.com/dm88fvsss/video/upload/v1749888064/Video_Intem_Error/mabooking_Text.mp4",
     difficulty: "Nghiêm trọng",
   },
   {
@@ -42,11 +42,11 @@ const tutorials = [
     title: "🚚 Sai Ngày Giao Hàng",
     description:
       "Nếu là dạng '03/05/2025 hoặc công thức như =NOW()+1 thì hệ thống sẽ đọc sai Ngày Giao Hàng.",
-    duration: "2:54",
+    duration: "1:43",
     views: "15.7K",
     category: "Ngày giao",
     videoUrl:
-      "https://res.cloudinary.com/dm88fvsss/video/upload/v1748913216/Video_Intem_Error/err_date_false.mp4",
+      "https://res.cloudinary.com/dm88fvsss/video/upload/v1749891604/Video_Intem_Error/err_date_false.mp4",
     difficulty: "Nghiêm trọng",
   },
   {
@@ -91,7 +91,7 @@ const tutorials = [
     description:
       "Do trong hệ thống chưa có thông tin của Mã Nhà Cung Cấp, hãy liên hệ IT để xử lý.",
     duration: "17s",
-    views: "7.2K",
+    views: "4.2K",
     category: "Nhà cung cấp",
     videoUrl:
       "https://res.cloudinary.com/dm88fvsss/video/upload/v1748683208/Video_Intem_Error/maNccnot_valid.mp4",
@@ -106,6 +106,18 @@ const tutorials = [
     category: "Booking",
     videoUrl:
       "https://res.cloudinary.com/dm88fvsss/video/upload/v1748915147/Video_Intem_Error/err_booking_null.mp4",
+    difficulty: "Nghiêm trọng",
+  },
+  {
+    id: 10,
+    title: "🏷️ Mã Booking Không Hợp Lệ",
+    description:
+      "Lỗi thường do file Excel, cột Mã Booking bị sai Mã Booking hoặc do số ký tự không đúng 7 ký tự.",
+    duration: "50s",
+    views: "2.2K",
+    category: "Booking",
+    videoUrl:
+      "https://res.cloudinary.com/dm88fvsss/video/upload/v1749889701/Video_Intem_Error/err_booking_khonghople.mp4",
     difficulty: "Nghiêm trọng",
   },
 ];
