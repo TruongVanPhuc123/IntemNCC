@@ -15,18 +15,19 @@ const generateTem = async (
   maNCC,
   customFont,
   page,
-  stickerOnPage,
-  totalQuantity
+  stickerOnPage
 ) => {
   try {
     const maStore = Number(row["Mã siêu thị"]);
     const soKien = Number(row["Số Kiện NCC"]);
     const soHoaDon = row["Số Hóa Đơn NCC"];
-    const maBooking = row["Mã booking"];
+    const maBooking = String(row["Mã booking"]);
     const ngayGiao = row["Ngày giao dự kiến"];
 
     if (!maBooking)
       throw new AppError(404, "🏷️ Thiếu Mã Booking!", "Lỗi tạo tem");
+    if (maBooking.length !== 7)
+      throw new AppError(400, "🏷️ Mã Booking không hợp lệ!", "Lỗi tạo tem");
     if (!ngayGiao)
       throw new AppError(404, "🚚 Thiếu Ngày Giao Dự Kiến!", "Lỗi tạo tem");
     if (isNaN(soKien))
