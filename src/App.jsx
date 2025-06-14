@@ -5,7 +5,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { CloudUpload } from "lucide-react";
-import { Button } from "./components/ui/button";
+import TutorialVideoGrid from "./components/landing/error_video";
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -43,6 +43,7 @@ function App() {
         const text = await error.response.data.text();
         const json = JSON.parse(text);
         console.log("📦 Lỗi từ server:", json);
+
         Swal.fire({
           icon: "error",
           text: json?.errors,
@@ -54,38 +55,41 @@ function App() {
     setUploading(false);
   };
   return (
-    <div className="max-w-lg mx-auto p-6 space-y-6 bg-white shadow-lg rounded-xl mt-2">
-      {/* Header với Logo */}
-      <LogoSection />
+    <>
+      <div className="max-w-lg mx-auto p-6 space-y-6 bg-white shadow-lg rounded-xl mt-2">
+        {/* Header với Logo */}
+        <LogoSection />
 
-      {/* Khu vực tải file */}
-      <UploadZone files={files} setFiles={setFiles} />
+        {/* Khu vực tải file */}
+        <UploadZone files={files} setFiles={setFiles} />
 
-      {/* Hiển thị file đã chọn */}
-      {files.length > 0 && (
-        <FileZone
-          files={files}
-          uploadFiles={uploadFiles}
-          maNCC={maNCC}
-          uploading={uploading}
-          setFiles={setFiles}
-          setMaNCC={setMaNCC}
-        />
-      )}
-      <button
-        onClick={uploadFiles}
-        disabled={!maNCC || maNCC.length < 5 || uploading}
-        className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 
+        {/* Hiển thị file đã chọn */}
+        {files.length > 0 && (
+          <FileZone
+            files={files}
+            uploadFiles={uploadFiles}
+            maNCC={maNCC}
+            uploading={uploading}
+            setFiles={setFiles}
+            setMaNCC={setMaNCC}
+          />
+        )}
+        <button
+          onClick={uploadFiles}
+          disabled={!maNCC || maNCC.length < 5 || uploading}
+          className="w-full flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 
         border border-black hover:border-red-800
         focus:outline-none focus:ring-4 focus:ring-red-300 
         text-black font-medium py-2 px-4 rounded-lg shadow-lg 
         transform transition-all duration-200 hover:scale-105 
         disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {uploading ? "Đang Xử Lý..." : "Convert File"}
-        <CloudUpload />
-      </button>
-    </div>
+        >
+          {uploading ? "Đang Xử Lý..." : "Convert File"}
+          <CloudUpload />
+        </button>
+      </div>
+      <TutorialVideoGrid />
+    </>
   );
 }
 
