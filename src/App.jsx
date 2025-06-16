@@ -18,7 +18,7 @@ function App() {
     files.forEach((file) => formData.append("file", file));
 
     try {
-      const response = await axios.post(`api/upload/${maNCC}`, formData, {
+      const response = await axios.post(`/api/upload/${maNCC}`, formData, {
         responseType: "blob", // Nhận dữ liệu dưới dạng Blob
       });
 
