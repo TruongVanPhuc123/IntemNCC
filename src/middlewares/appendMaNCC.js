@@ -16,7 +16,7 @@ const appendMaNCC = (maNCC, totalQuantity) => {
   let lines = content.split("\n").filter((line) => line.trim());
   let updated = false;
 
-  // Neu da co MaNCC nay thi cap nhat
+  // Neu da co MaNCC nay thi cap nhat totalQuantity
   lines = lines.map((line) => {
     if (line.includes(`MaNCC: ${maNCC}`)) {
       const old = parseInt(line.match(/TotalQuantity: (\d+)/)?.[1] || "0", 10);
