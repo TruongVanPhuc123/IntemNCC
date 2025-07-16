@@ -22,7 +22,7 @@ function dataTemContent(row, maNCC, TenNCC, result) {
       ``,
       "",
       `${validateNumberInput(maBooking, "Mã booking")}`,
-      `${String(soHoaDon).trim()}`,
+      `${soHoaDon}`,
     ],
     [
       "Siêu thị/Cửa hàng:",

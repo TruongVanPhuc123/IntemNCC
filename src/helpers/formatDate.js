@@ -25,25 +25,3 @@ function formatDate(dateString) {
 }
 
 module.exports = { formatDate };
-
-// const dateFormatter = new Intl.DateTimeFormat("vi-VN", {
-//     day: "2-digit",
-//     month: "2-digit",
-//     year: "numeric",
-//   });
-
-//   function formatDate(dateString) {
-//     // Tách theo định dạng dd/mm/yyyy
-//     const [day, month, year] = dateString.split("/");
-//     //   console.log(day, month, year);
-//     // Tạo Date đúng định dạng: yyyy-mm-dd
-//     const date = new Date(`${year}-${month}-${day}`);
-
-//     if (isNaN(date)) return dateString;
-
-//     date.setDate(date.getDate());
-
-//     return dateFormatter.format(date);
-//   }
-
-//   module.exports = { formatDate };
