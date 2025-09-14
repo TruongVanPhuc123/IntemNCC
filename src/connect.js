@@ -1,59 +1,40 @@
-const sql = require("mssql");
 const { AppError } = require("./helpers/utils");
-require("dotenv").config();
+const odbc = require("odbc");
 
-const config = {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    server: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    port: Number(process.env.DB_PORT),
-    pool: {
-        idleTimeoutMillis: 30000,
-    },
-    options: {
-        encrypt: false, // Tắt SSL nếu không cần thiết
-        enableArithAbort: true,
-    },
-};
+const dbPath = "C:\\Users\\khod2\\Data_Web_Intem.accdb";
+const connString = `DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=${dbPath}`;
 
-// Biến toàn cục giữ kết nối để tái sử dụng, tránh mở nhiều connection gây lỗi
-let poolPromise = sql.connect(config)
-    .then(pool => {
-        console.log("✅ Kết nối SQL Server thành công!");
-        return pool;
-    })
-    .catch(err => {
-        throw new AppError(500, err.message, "❌ Kết nối SQL Server thất bại!");
-    });
+let poolPromise = odbc
+  .connect(connString)
+  .then((conn) => {
+    console.log("✅ Kết nối Access thành công!");
+    return conn;
+  })
+  .catch((err) => {
+    throw new AppError(500, err.message, "❌ Kết nối Access thất bại!");
+  });
 
 const getPool = async () => {
-    try {
-        const pool = await poolPromise;
-        if (!pool.connected) {
-            console.warn("⚠️ Pool mất kết nối, tạo lại...");
-            poolPromise = sql.connect(config);
-            return await poolPromise;
-        }
-        return pool;
-    } catch (error) {
-        console.warn("⚠️ Pool lỗi, tạo lại...");
-        poolPromise = sql.connect(config);
-        return await poolPromise;
-    }
-}
+  try {
+    const conn = await poolPromise;
+    return conn;
+  } catch (error) {
+    console.warn("⚠️ Pool lỗi, tạo lại...");
+    poolPromise = odbc.connect(connString);
+    return await poolPromise;
+  }
+};
 
 // Hàm truy vấn tối ưu
-const query = async (queryString, id, input) => {
-    try {
-        const pool = await getPool();
-        const request = pool.request();
-        const result = await request.input(input, sql.Int, id).query(queryString);
-        return result.recordset[0];
-    } catch (error) {
-        throw new AppError(500, error.message, "❌ Truy vấn dữ liệu thất bại!");
-    }
-}
-
+const query = async (queryString) => {
+  try {
+    const conn = await getPool();
+    const result = await conn.query(queryString);
+    // console.log(result);
+    return result[0];
+  } catch (error) {
+    throw new AppError(500, error.message, "❌ Truy vấn dữ liệu thất bại!");
+  }
+};
 
 module.exports = { query };

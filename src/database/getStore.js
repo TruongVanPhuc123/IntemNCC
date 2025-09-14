@@ -1,21 +1,8 @@
 const Redis = require("ioredis");
-const sql = require("mssql");
-require("dotenv").config();
+const { query } = require("../connect");
 const { AppError } = require("../helpers/utils");
 
 const redis = new Redis(); // Kết nối Redis, mặc định localhost:6379
-
-const config = {
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  server: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  port: Number(process.env.DB_PORT),
-  options: {
-    encrypt: false,
-    trustServerCertificate: true,
-  },
-};
 
 const GetStore = async (maStore, forceQuery = false) => {
   let pool;
@@ -28,25 +15,21 @@ const GetStore = async (maStore, forceQuery = false) => {
       }
     }
 
-    pool = await sql.connect(config);
-    const result = await pool
-      .request()
-      .input("MaStore", sql.Int, maStore)
-      .query("SELECT * FROM Store WHERE MaStore = @MaStore");
+    const store = await query(
+      `SELECT * FROM dbo_Store WHERE MaStore = '${maStore}'`
+    );
 
-    const data = result.recordset;
-    // console.log("🟨 Kết quả SQL:", data);
-
-    if (Array.isArray(data) && data.length > 0) {
-      await redis.set(`store:${maStore}`, JSON.stringify(data[0]), "EX", 86400);
-      return data[0];
-    } else {
+    if (!store) {
       throw new AppError(
         404,
-        `⚠️ Không tìm thấy siêu thị với mã ${maStore}`,
-        "Get data failed!"
+        "⚠️ Không tìm thấy siêu thị!",
+        "Get Store Failed!"
       );
     }
+    // Cache dữ liệu với TTL là 1 giờ
+    await redis.set(`store:${maStore}`, JSON.stringify(store), "EX", 86400);
+
+    return store;
   } catch (error) {
     throw new AppError(
       500,

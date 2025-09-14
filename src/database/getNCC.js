@@ -15,11 +15,9 @@ const GetNCC = async (maNCC) => {
 
     // Truy vấn database
     const data = await query(
-      "SELECT * FROM NhaCungCap WHERE MaNCC = @maNCC",
-      maNCC,
-      "maNCC"
+      `SELECT * FROM dbo_NhaCungCap WHERE MaNCC = '${maNCC}'`
     );
-    if (!data || data.length === 0) {
+    if (!data) {
       throw new AppError(
         404,
         "⚠️ Không tìm thấy nhà cung cấp!",
